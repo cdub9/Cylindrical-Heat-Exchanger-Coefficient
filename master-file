@@ -22,3 +22,9 @@ U = input("Please enter the overall heat transfer coefficient: ")
 fluidc = input("Please enter the fluid type for the cold input: ")
 fluidh = input("Please enter the fluid type for the hot input: ")
 
+cpc = A + B * Tci + C * Tci**2 + D * Tci**3 + E * Tci**4
+cph = A + B * Thi + C * Thi**2 + D * Thi**3 + E * Thi**4
+
+# If Tho is not provided by the user then use this formula to calculate it
+Tho = ((mdotc * cpc * (Tco - Tci)) / (mdoth * cph)) + Thi
+Tco = ((mdoth * cph * (Thi - Tho)) / (mdotc * cpc)) + Tci
