@@ -1,1 +1,24 @@
 # This is the master file
+
+import numpy as np
+
+# Inputs for variables (This is just a high level outline of the code)
+
+units = input("Will you be entering values in AES or SI units? ")
+
+Tci = input("Please enter the temperature of the cold input: ")
+Thi = input("Please enter the temperature of the hot input: ")
+
+Tco = input("Please enter the temperature of the cold output: ")
+or
+Tho = input("Please enter the temperature of the hot output: ")
+
+mdotc = input("Please enter the mass flow rate of the colder fluid: ")
+mdoth = input("Please enter the mass flow rate of the hotter fluid: ")
+
+U = input("Please enter the overall heat transfer coefficient: ")
+
+# Allow the user to select from water, 1,1,1,2-Tetraflouroethane, ethanol or 2,2,4-trimethylpentane
+fluidc = input("Please enter the fluid type for the cold input: ")
+fluidh = input("Please enter the fluid type for the hot input: ")
+
