@@ -1,26 +1,38 @@
 # This is the master file
 
 import numpy as np
+import sys
 
-# Inputs for variables (This is just a high level outline of the code)
+# Inputs for variables (This is just a high level outline of the code right now)
 
 units = input("Will you be entering values in AES or SI units? ")
 
 Tci = input("Please enter the temperature of the cold input: ")
 Thi = input("Please enter the temperature of the hot input: ")
 
-Tco = input("Please enter the temperature of the cold output: ")
-or
-Tho = input("Please enter the temperature of the hot output: ")
-
 mdotc = input("Please enter the mass flow rate of the colder fluid: ")
 mdoth = input("Please enter the mass flow rate of the hotter fluid: ")
 
 U = input("Please enter the overall heat transfer coefficient: ")
 
+# User must choose to supply Tco or Tho
+choices = {'cold': 'Tco', 'hot': 'Tho'}
+choose_output = input("Will you be providing the temperature of the cold output (cold) or hot output (hot)?")
+if choose_output in choices:
+    the_output = choices[choose_output]
+    if the_output == 'Tco':
+        Tco = input("Please enter the temperature of the cold output: ")
+    elif the_output == 'Tho':
+        Tho = input("Please enter the temperature of the hot output: ")
+else:
+    print("You did not select a valid output. This program is terminating.")
+    sys.exit()
+
 # Allow the user to select from water, 1,1,1,2-Tetraflouroethane, ethanol or 2,2,4-trimethylpentane
 fluidc = input("Please enter the fluid type for the cold input: ")
 fluidh = input("Please enter the fluid type for the hot input: ")
+
+heat_capacity_constants = np.array([[276370,-2090.10,8.13,-0.01,0],[651080,-9505.70,62.84,-0.18,0],[102640,-139.63,-0.03,0,0],[0,696.7,-1.38,0,0]])
 
 cpc = A + B * Tci + C * Tci**2 + D * Tci**3 + E * Tci**4
 cph = A + B * Thi + C * Thi**2 + D * Thi**3 + E * Thi**4
