@@ -40,3 +40,83 @@ cph = A + B * Thi + C * Thi**2 + D * Thi**3 + E * Thi**4
 # If Tho is not provided by the user then use this formula to calculate it
 Tho = ((mdotc * cpc * (Tco - Tci)) / (mdoth * cph)) + Thi
 Tco = ((mdoth * cph * (Thi - Tho)) / (mdotc * cpc)) + Tci
+
+
+#Kyler's code
+import numpy as np
+import pandas as pd
+import sys
+
+'''
+load data file
+define conversion functions
+data_file=pd.read_excel('Thermophysical_Properties.xlsx')
+'''
+
+data_file=np.read_excel('Thermophysical_Properties.xlsx')
+
+def convert_inT_ci(inT_ci):
+    T_ci=inT_ci/1.8
+    return T_ci
+def convert_inT_hi(inT_hi):
+    T_hi=inT_hi/1.8
+    return T_hi
+def convert_inM_c(inM_c):
+    M_c=inM_c*.45359
+    return M_c
+def convert_inM_h(inM_h):
+    M_h=inM_h*.45359
+    return M_h
+def convert_inU(inU):
+    U=inU*1055/.092903*9/5
+    return U
+
+
+'''
+choose AES or SI units
+input values
+convert AES to SI if necessary
+'''
+
+correct=False
+while not (correct):
+    units=input('Enter units in AES or SI?: ')
+    if units == "AES":
+        inT_ci=float(input("What is the colder fluid input temperature? (R): "))
+        inT_hi=float(input("What is the hotter fluid input temperature? (R): "))
+        inM_c=float(input('What is the mass flow rate of the colder fluid? (lbm/sec): '))
+        inM_h=float(input('What is the mass flow rate of the hotter fluid? (lbm/sec): '))
+        inU=float(input('What is the Overall Heat Transfer Coefficient? (BTU/s*ft^2*R): '))
+        correct=True
+    elif units == "SI":
+        inT_ci=float(input("What is the colder fluid input temperature? (K): "))
+        inT_hi=float(input("What is the hotter fluid input temperature? (K): "))
+        inM_c=float(input('What is the mass flow rate of the colder fluid? (kg/sec): '))
+        inM_h=float(input('What is the mass flow rate of the hotter fluid?: (kg/sec)'))
+        inU=float(input('What is the Overall Heat Transfer Coefficient?: (J/s*m^2*K)'))
+        correct=True
+        
+if units == "AES":
+    T_ci=convert_inT_ci(inT_ci)
+    T_hi=convert_inT_hi(inT_hi)
+    M_c=convert_inM_c(inM_c)
+    M_h=convert_inM_h(inM_h)
+    U=convert_inU(inU)
+else:
+    T_ci=inT_ci
+    T_hi=inT_hi
+    M_c=inM_c
+    M_h=inM_h
+    U=inU
+    
+
+print(T_ci,T_hi,M_c,M_h,U)
+
+
+if M_c < 0:
+    print("Variables have an error, ending program")
+    sys.exit()
+    
+if M_h < 0:
+    print("Variables have an error, ending program")
+    sys.exit()
