@@ -48,13 +48,10 @@ import pandas as pd
 import sys
 
 '''
-load data file
+load Thermo data into array
 define conversion functions
-data_file=pd.read_excel('Thermophysical_Properties.xlsx')
 '''
 
-#data_file=pd.read_excel('Thermophysical_Properties_final.xlsx')
-#data_file_np=np.genfromtxt('Thermophysical_Properties_final.xlsx',delimiter=' ')
 
 def convert_inT_ci(inT_ci):
     T_ci=inT_ci/1.8
@@ -72,9 +69,6 @@ def convert_inU(inU):
     U=inU*1055/.092903*9/5
     return U
 
-
-#print(data_file_np)
-#print(data_file[:,][:,1:5])
 
 Water_array=np.array([18.01528,273.15,373.15,2.7637E+05,-2.0901E+03,8.1250E+00,-1.4116E-02,9.3701E-06])
 R134a_array=np.array([102.03089,172.00,247.08,6.5108E+05,-9.5057E+03,6.2835E+01,-1.8264E-01,2.0031E-04])
@@ -217,10 +211,11 @@ Calculate unspecified temp (Tho or Tco)
 if output_flow == "T_co":
     T_c=(T_out+T_ci)/2
 elif output_flow == "T_ho":
-    T_c=(T_out+T_hi)/2
+    T_h=(T_out+T_hi)/2
     
-C_pc=A+B*T+C*T**2+D*T**3+E*T**4
-#C_ph= ??
+C_pc=A+B*T_c+C*T_c**2+D*T_c**3+E*T_c**4
+C_ph=A+B*T_h+C*T_h**2+D*T_h**3+E*T_h**4
+
 
 correct=False
 if output_flow == "T_ho":
