@@ -53,7 +53,8 @@ define conversion functions
 data_file=pd.read_excel('Thermophysical_Properties.xlsx')
 '''
 
-data_file=np.read_excel('Thermophysical_Properties.xlsx')
+#data_file=pd.read_excel('Thermophysical_Properties_final.xlsx')
+#data_file_np=np.genfromtxt('Thermophysical_Properties_final.xlsx',delimiter=' ')
 
 def convert_inT_ci(inT_ci):
     T_ci=inT_ci/1.8
@@ -72,11 +73,64 @@ def convert_inU(inU):
     return U
 
 
+#print(data_file_np)
+#print(data_file[:,][:,1:5])
+
+Water_array=np.array([18.01528,273.15,373.15,2.7637E+05,-2.0901E+03,8.1250E+00,-1.4116E-02,9.3701E-06])
+R134a_array=np.array([102.03089,172.00,247.08,6.5108E+05,-9.5057E+03,6.2835E+01,-1.8264E-01,2.0031E-04])
+Ethanol_array=np.array([46.06844,159.05,351.44,1.0264E+05,-1.3963E+02,-3.0341E-02,2.0386E-03,0.0000E+00])
+trimethylpentane_array=np.array([114.22852,165.777,372.388,9.5275E+04,6.9670E+02,-1.3765E+00,2.1734E-03,0.0000E+00])
+
 '''
+choose fluid
 choose AES or SI units
 input values
 convert AES to SI if necessary
+check for correct temperature inputs
 '''
+correct=False
+while not (correct):
+    fluid_type=input('Enter fluid type (Water, R134a, Ethanol, 2,2,4-trimethylpentane: ')
+    if fluid_type == "Water":
+        molecular_weight=Water_array[0] #g/mol
+        melting_point=Water_array[1] #K
+        boiling_point=Water_array[2] #K
+        A=Water_array[3]
+        B=Water_array[4]
+        C=Water_array[5]
+        D=Water_array[6]
+        E=Water_array[7]
+        correct=True
+    elif fluid_type == "R134a":
+        molecular_weight=R134a_array[0] #g/mol
+        melting_point=R134a_array[1] #K
+        boiling_point=R134a_array[2] #K
+        A=R134a_array[3]
+        B=R134a_array[4]
+        C=R134a_array[5]
+        D=R134a_array[6]
+        E=R134a_array[7]
+        correct=True
+    elif fluid_type == "Ethanol":
+        molecular_weight=Ethanol_array[0] #g/mol
+        melting_point=Ethanol_array[1] #K
+        boiling_point=Ethanol_array[2] #K
+        A=Ethanol_array[3]
+        B=Ethanol_array[4]
+        C=Ethanol_array[5]
+        D=Ethanol_array[6]
+        E=Ethanol_array[7]
+        correct=True
+    elif fluid_type == "2,2,4-trimethylpentane":
+        molecular_weight=trimethylpentane_array[0] #g/mol
+        melting_point=trimethylpentane_array[1] #K
+        boiling_point=trimethylpentane_array[2] #K
+        A=trimethylpentane_array[3]
+        B=trimethylpentane_array[4]
+        C=trimethylpentane_array[5]
+        D=trimethylpentane_array[6]
+        E=trimethylpentane_array[7]
+        correct=True
 
 correct=False
 while not (correct):
@@ -85,15 +139,49 @@ while not (correct):
         inT_ci=float(input("What is the colder fluid input temperature? (R): "))
         inT_hi=float(input("What is the hotter fluid input temperature? (R): "))
         inM_c=float(input('What is the mass flow rate of the colder fluid? (lbm/sec): '))
+        if inM_c < 0:
+            print("Variables have an error, mass flow rate is negative, ending program")
+            sys.exit()
         inM_h=float(input('What is the mass flow rate of the hotter fluid? (lbm/sec): '))
+        if inM_h < 0:
+            print("Variables have an error, mass flow rate is negative, ending program")
+            sys.exit()
         inU=float(input('What is the Overall Heat Transfer Coefficient? (BTU/s*ft^2*R): '))
+        if inU < 0:
+            print("Variables have an error, U is negative, ending program")
+            sys.exit()
+        output_flow=input('Enter weather cold (T_co) or hot output (T_ho) will be specified: ')
+        if output_flow == "T_co":
+            T_out=float(input("What is the " + fluid_type + " output temperature? (R)"))
+        elif output_flow == "T_ho":
+            T_out=float(input("What is the " + fluid_type + " output temperature? (R)"))
+        else:
+            print("Output stream not specified, ending program")
+            sys.exit()
         correct=True
     elif units == "SI":
         inT_ci=float(input("What is the colder fluid input temperature? (K): "))
         inT_hi=float(input("What is the hotter fluid input temperature? (K): "))
         inM_c=float(input('What is the mass flow rate of the colder fluid? (kg/sec): '))
-        inM_h=float(input('What is the mass flow rate of the hotter fluid?: (kg/sec)'))
+        if inM_c < 0:
+            print("Variables have an error, mass flow rate is negative, ending program")
+            sys.exit()
+        inM_h=float(input('What is the mass flow rate of the hotter fluid? (kg/sec): '))
+        if inM_h < 0:
+            print("Variables have an error, mass flow rate is negative, ending program")
+            sys.exit()
         inU=float(input('What is the Overall Heat Transfer Coefficient?: (J/s*m^2*K)'))
+        if inU < 0:
+            print("Variables have an error, U is negative, ending program")
+            sys.exit()
+        output_flow=input('Enter weather cold (T_co) or hot output (T_ho) will be specified: ')
+        if output_flow == "T_co":
+            T_out=float(input("What is the " + fluid_type + " output temperature? (K): "))
+        elif output_flow == "T_ho":
+            T_out=float(input("What is the " + fluid_type + " output temperature? (K): "))
+        else:
+            print("Output stream not specified, ending program")
+            sys.exit()
         correct=True
         
 if units == "AES":
@@ -108,17 +196,38 @@ else:
     M_c=inM_c
     M_h=inM_h
     U=inU
-    
 
-print(T_ci,T_hi,M_c,M_h,U)
-
-
-if M_c < 0:
-    print("Variables have an error, ending program")
+if T_ci < melting_point or T_out > boiling_point:
+    print("Invalid input temperature, ending program")
+    sys.exit()
+if T_hi < melting_point or T_out > boiling_point:
+    print("Invalid input temperature, ending program")
+    sys.exit()
+if T_out < melting_point or T_out > boiling_point:
+    print("Invalid output temperature,ending program")
     sys.exit()
     
-if M_h < 0:
-    print("Variables have an error, ending program")
-    sys.exit()
-    
+'''
+Calculate average temperature of fluid
+Calculate heat capacity of fluid
+Calculate unspecified temp (Tho or Tco)
 
+'''
+
+if output_flow == "T_co":
+    T_c=(T_out+T_ci)/2
+elif output_flow == "T_ho":
+    T_c=(T_out+T_hi)/2
+    
+C_pc=A+B*T+C*T**2+D*T**3+E*T**4
+#C_ph= ??
+
+correct=False
+if output_flow == "T_ho":
+    T_unspec=((M_c*C_pc*(T_co-T_ci))/(M_h*C_ph))+T_hi
+    correct=True
+elif output_flow == "T_co":
+    T_unspec=((-M_h*C_ph*(T_hi-T_ho))/(M_c*C_pc))+T_ci
+    correct=True
+
+print (T_unspec)
