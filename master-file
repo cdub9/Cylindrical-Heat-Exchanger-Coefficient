@@ -84,8 +84,9 @@ check for correct temperature inputs
 '''
 correct=False
 while not (correct):
-    fluid_type=input('Enter fluid type (Water, R134a, Ethanol, 2,2,4-trimethylpentane: ')
-    if fluid_type == "Water":
+    fluid_type_h=input('Enter fluid type in hot stream \
+    (Water, R134a, Ethanol, 2,2,4-trimethylpentane: ')
+    if fluid_type_h == "Water":
         molecular_weight=Water_array[0] #g/mol
         melting_point=Water_array[1] #K
         boiling_point=Water_array[2] #K
@@ -95,7 +96,7 @@ while not (correct):
         D=Water_array[6]
         E=Water_array[7]
         correct=True
-    elif fluid_type == "R134a":
+    elif fluid_type_h == "R134a":
         molecular_weight=R134a_array[0] #g/mol
         melting_point=R134a_array[1] #K
         boiling_point=R134a_array[2] #K
@@ -105,7 +106,7 @@ while not (correct):
         D=R134a_array[6]
         E=R134a_array[7]
         correct=True
-    elif fluid_type == "Ethanol":
+    elif fluid_type_h == "Ethanol":
         molecular_weight=Ethanol_array[0] #g/mol
         melting_point=Ethanol_array[1] #K
         boiling_point=Ethanol_array[2] #K
@@ -115,7 +116,7 @@ while not (correct):
         D=Ethanol_array[6]
         E=Ethanol_array[7]
         correct=True
-    elif fluid_type == "2,2,4-trimethylpentane":
+    elif fluid_type_h == "2,2,4-trimethylpentane":
         molecular_weight=trimethylpentane_array[0] #g/mol
         melting_point=trimethylpentane_array[1] #K
         boiling_point=trimethylpentane_array[2] #K
@@ -125,7 +126,58 @@ while not (correct):
         D=trimethylpentane_array[6]
         E=trimethylpentane_array[7]
         correct=True
+    else:
+        print("Incorrect entry for fluid type, ending program")
+        sys.exit()
 
+correct=False
+while not (correct):
+    fluid_type_c=input('Enter fluid type in cold stream \
+    (Water, R134a, Ethanol, 2,2,4-trimethylpentane: ')
+    if fluid_type_c == "Water":
+        molecular_weight=Water_array[0] #g/mol
+        melting_point=Water_array[1] #K
+        boiling_point=Water_array[2] #K
+        A=Water_array[3]
+        B=Water_array[4]
+        C=Water_array[5]
+        D=Water_array[6]
+        E=Water_array[7]
+        correct=True
+    elif fluid_type_c == "R134a":
+        molecular_weight=R134a_array[0] #g/mol
+        melting_point=R134a_array[1] #K
+        boiling_point=R134a_array[2] #K
+        A=R134a_array[3]
+        B=R134a_array[4]
+        C=R134a_array[5]
+        D=R134a_array[6]
+        E=R134a_array[7]
+        correct=True
+    elif fluid_type_c == "Ethanol":
+        molecular_weight=Ethanol_array[0] #g/mol
+        melting_point=Ethanol_array[1] #K
+        boiling_point=Ethanol_array[2] #K
+        A=Ethanol_array[3]
+        B=Ethanol_array[4]
+        C=Ethanol_array[5]
+        D=Ethanol_array[6]
+        E=Ethanol_array[7]
+        correct=True
+    elif fluid_type_c == "2,2,4-trimethylpentane":
+        molecular_weight=trimethylpentane_array[0] #g/mol
+        melting_point=trimethylpentane_array[1] #K
+        boiling_point=trimethylpentane_array[2] #K
+        A=trimethylpentane_array[3]
+        B=trimethylpentane_array[4]
+        C=trimethylpentane_array[5]
+        D=trimethylpentane_array[6]
+        E=trimethylpentane_array[7]
+        correct=True        
+    else:
+        print("Incorrect entry for fluid type, ending program")
+        sys.exit()
+        
 correct=False
 while not (correct):
     units=input('Enter units in AES or SI?: ')
@@ -209,20 +261,22 @@ Calculate unspecified temp (Tho or Tco)
 '''
 
 if output_flow == "T_co":
-    T_c=(T_out+T_ci)/2
+    def C_p(T_ho):
+        T_h=(T_hi+T_ho)/2
+        T_c=(T_ci+T_co)/2
+        C_p=(M_h*(A+B*T_h+C*T_h**2+D*T_h**3+E*T_h**4)*(T_hi-T_ho))\
+        -(M_c*(A+B*T_c+C*T_c**2+D*T_c**3+E*T_c**4)*(T_co-T_ci))
+        return C_p
+    z=fsolve(C_p,0)
+    T_ho = z
+    print ("T_ho = " + str(z) + "K")
 elif output_flow == "T_ho":
-    T_h=(T_out+T_hi)/2
-    
-C_pc=A+B*T_c+C*T_c**2+D*T_c**3+E*T_c**4
-C_ph=A+B*T_h+C*T_h**2+D*T_h**3+E*T_h**4
-
-
-correct=False
-if output_flow == "T_ho":
-    T_unspec=((M_c*C_pc*(T_co-T_ci))/(M_h*C_ph))+T_hi
-    correct=True
-elif output_flow == "T_co":
-    T_unspec=((-M_h*C_ph*(T_hi-T_ho))/(M_c*C_pc))+T_ci
-    correct=True
-
-print (T_unspec)
+    def C_p(T_co):
+        T_h=(T_hi+T_ho)/2
+        T_c=(T_ci+T_co)/2
+        C_p=(M_h*(A+B*T_h+C*T_h**2+D*T_h**3+E*T_h**4)*(T_hi-T_ho))\
+        -(M_c*(A+B*T_c+C*T_c**2+D*T_c**3+E*T_c**4)*(T_co-T_ci))
+        return C_p
+    z=fsolve(C_p,0)
+    T_co = z
+    print ("T_co = " + str(z) + "K")
