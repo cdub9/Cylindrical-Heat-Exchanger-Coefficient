@@ -14,8 +14,10 @@ def convert_inT_hi(inT_hi):
     return T_hi
 def convert_T_cout(T_cout):
     T_cout=(T_cout+459.67)*(5/9)
+    return T_cout
 def convert_T_hout(T_hout):
     T_hout=(T_hout+459.67)*(5/9)
+    return T_hout
 def convert_inM_c(inM_c):
     M_c=inM_c*.45359
     return M_c
