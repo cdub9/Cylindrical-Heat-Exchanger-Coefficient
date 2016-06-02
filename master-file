@@ -7,15 +7,15 @@ import sys
 # Define conversion functions from AES to SI
 
 def convert_inT_ci(inT_ci):
-    T_ci=inT_ci/1.8
+    T_ci=(inT_ci+459.67)*(5/9)
     return T_ci
 def convert_inT_hi(inT_hi):
-    T_hi=inT_hi/1.8
+    T_hi=(inT_hi+459.67)*(5/9)
     return T_hi
 def convert_T_cout(T_cout):
-    T_cout=T_cout/1.8
+    T_cout=(T_cout+459.67)*(5/9)
 def convert_T_hout(T_hout):
-    T_hout=T_hout/1.8
+    T_hout=(T_hout+459.67)*(5/9)
 def convert_inM_c(inM_c):
     M_c=inM_c*.45359
     return M_c
@@ -52,7 +52,7 @@ trimethylpentane_array=np.array([114.22852,165.777,372.388,9.5275E+04,6.9670E+02
 
 correct=False
 while not (correct):
-    cfluid_type=input('Enter the fluid type for the cold stream (Water, R134a, Ethanol, 2,2,4-trimethylpentane: ')
+    cfluid_type=input('Enter the fluid type for the cold stream (Water, R134a, Ethanol, 2,2,4-trimethylpentane): ')
     if cfluid_type == "Water":
         cmolecular_weight=Water_array[0] #g/mol
         cmelting_point=Water_array[1] #K
@@ -103,7 +103,7 @@ while not (correct):
 
 correct=False
 while not (correct):
-    hfluid_type=input('Enter the fluid type for the hot stream (Water, R134a, Ethanol, 2,2,4-trimethylpentane: ')
+    hfluid_type=input('Enter the fluid type for the hot stream (Water, R134a, Ethanol, 2,2,4-trimethylpentane): ')
     if hfluid_type == "Water":
         hmolecular_weight=Water_array[0] #g/mol
         hmelting_point=Water_array[1] #K
@@ -156,8 +156,8 @@ correct=False
 while not (correct):
     units=input("Are you entering units in AES or SI?: ")
     if units == "AES":
-        inT_ci=float(input("What is the inlet temperature of the cold stream? (R): "))
-        inT_hi=float(input("What is the inlet temperature of the hot stream? (R): "))
+        inT_ci=float(input("What is the inlet temperature of the cold stream? (F): "))
+        inT_hi=float(input("What is the inlet temperature of the hot stream? (F): "))
         inM_c=float(input("What is the mass flow rate of the cold stream? (lbm/sec): "))
         if inM_c < 0:
             print("You entered a negative mass flow rate, which is not valid. This program is terminating.")
@@ -172,9 +172,9 @@ while not (correct):
             sys.exit()
         output_flow=input("Are you providing the cold or hot outlet temperature? (Type 'cold' or 'hot'): ")
         if output_flow == "cold":
-            T_cout=float(input("What is the cold " + cfluid_type + " outlet temperature? (R)"))
+            T_cout=float(input("What is the cold " + cfluid_type + " outlet temperature? (F)"))
         elif output_flow == "hot":
-            T_hout=float(input("What is the hot " + hfluid_type + " outlet temperature? (R)"))
+            T_hout=float(input("What is the hot " + hfluid_type + " outlet temperature? (F)"))
         else:
             print("You didn't enter a valid outlet stream. This program is terminating.")
             sys.exit()
