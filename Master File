@@ -1,0 +1,41 @@
+Kyler's code
+
+import numpy as np
+import sys
+
+#Load arrays for Table 7.2, 7.4, and conditions
+
+T72=np.loadtxt("Table 7.2",delimiter=",")
+print(T72[:,][:,2])
+
+#Inputs from user
+correct=False
+while not (correct):
+    corr_type=input('What is the geometry of the correlation? e.g. cylinder')
+    if corr_type == "cylinder":
+        D=float(input("Enter the diameter of the tube (m): "))
+        V=float(input("Enter the velocity of the fluid (m/s): "))
+        nu=float(input("Enter the kinematic viscosity constant (m^2/s): "))
+        Pr=float(input("Enter the Prandtl number: "))
+        k=float(input("Enter k (W/m*K): "))
+        correct=True
+    else:
+        print("You've entered an invalid correlation. This program is terminating.")
+        sys.exit()
+        
+Table 7.2
+
+#Min Re_D, Max Re_D, C, m
+.4,4,.989,.33
+4,40,.911,.385
+40,4000,.683,.466
+4000,40000,.193,.618
+40000,400000,.027,.805
+
+Table 7.4
+
+#Min Re_D, Max Re_D, C, m
+1,40,.75,.4
+40,1000,.51,.5
+10**3,2*10**5,.26,.6
+2*10**5,10**6,.076,.7
