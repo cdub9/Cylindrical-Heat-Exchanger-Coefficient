@@ -53,20 +53,8 @@ Re_D=(V*D)/nu
 
 
 for i in range(len(T72)):
-    if Re_D > .4 and Re_D < 4:
-        
-        return C = T72[0,2] and m = T72 [0,3]
-    if Re_D > 4 and Re_D < 40:
-        return C = T72[1,2] and m = T72 [1,3]
-    if Re_D > 40 and Re_D < 4000:
-        return C = T72[2,2] and m = T72 [2,3]
-    if Re_D > 4000 and Re_D < 40000:
-        return C = T72[3,2] and m = T72 [3,3]
-    if Re_D > 40000 and Re_D < 400000:
-        return C = T72[4,2] and m = T72 [4,3]
-    break
-    
-    
-#dont need all those if statements, just get it to look at the value in the table
-#define C and m to reference them later
-#dont need to use return
+    if Re_D > T72[i,0] and Re_D < T72[i,1]:
+        C = float(T72[i,2])
+        m = float(T72 [i,3])
+
+print (C,m)
