@@ -80,4 +80,39 @@ if Re_D >= 0.2 and Pr >= 0.2:
     Nu3 = 0.3+0.62*Re_D**(1/2)*Pr**(1/3)*((1+(0.4/Pr)**(2/3))**(1/4))*(1+(Re_D/282000)**(5/8))**(4/5)
     h3 = (Nu3*k)/D
     print("The third correlation is a match and h = " + str(h3))
+    
+
+#Determine appropriate correlation(s) from conditions
+
+#Correlation 7.52
+for i in range(len(T72)):
+    if Re_D > T72[i,0] and Re_D < T72[i,1]:
+        C = float(T72[i,2])
+        m = float(T72[i,3])
+        Nu_d = C * Re_D**m * Pr**(1/3)
+        h = Nu_d*k/D
+        print("Correlation 7.52 fits and h = " + str(h) + "W/M^2*K")
+
+print (C,m)
+
+#Correlation 7.53
+for i in range(len(T74)):
+    if Re_D > T74[i,0] and Re_D < T74[i,1]:
+        C = float(T74[i,2])
+        m = float(T74[i,3])
+        Pr_s = float(input("What is the value of Pr_s?: "))
+        if Pr < 10:
+            n = .37
+        elif Pr < 10:
+            n = .36
+        Nu_d = C * Re_D**m * Pr**n * (Pr/Pr_s)**(1/4)
+        h = Nu_d*k/D
+        print("Correlation 7.53 fits and h = " + str(h) + "W/M^2*K")
+
+#Correlation 7.54
+
+if Re_D >= .2 and Pr >= .2:
+    Nu_d = 0.3 + (0.62 * Re_D**(1/2) * Pr**(1/3) * (( 1 + (0.4 / Pr)**(2/3))**(1/4)) * (1 + (Re_D / 282000)**(5/8))**(4/5)
+    h = Nu_d*k/D
+    print("Correlation 7.54 fits and h = " + str(h) + "W/M^2*K")
 
