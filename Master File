@@ -1,101 +1,51 @@
 import numpy as np
 import sys
 
-
 #Load arrays for Table 7.2, 7.4, and conditions
 
-T72=np.loadtxt("Table 7.2.txt",delimiter=",")
-#print(T72)
-
-T74=np.loadtxt("Table 7.4.txt",delimiter=",")
-#print(T74)
-
+T72=np.loadtxt("Table 7.2",delimiter=",")
+T74=np.loadtxt("Table 7.4",delimiter=",")
 
 #Inputs from user
-
 correct=False
 while not (correct):
-    corr_type=input("What is the geometry of the correlation (e.g. cylinder)? ")
+    corr_type=input('What is the geometry of the correlation? e.g. cylinder: ')
     if corr_type == "cylinder":
         D=float(input("Enter the diameter of the tube (m): "))
         V=float(input("Enter the velocity of the fluid (m/s): "))
         nu=float(input("Enter the kinematic viscosity constant (m^2/s): "))
         Pr=float(input("Enter the Prandtl number: "))
-        k=float(input("Enter k (W/m*K): "))
+        k=float(input("Enter thermal conductivity (W/m*K): "))
         correct=True
     else:
         print("You've entered an invalid correlation. This program is terminating.")
         sys.exit()
 
-
-Re_D = V*D/nu
-print(Re_D)
-
-
-# 3 sets of "if" statements so we can report on every correlation that matches the conditions
-    
-if Re_D >= 0.4 and Re_D <= 4e+05 and Pr >= 0.7:
-    if Re_D >= 0.4 and Re_D < 4:
-        C = T72[:1,2]
-        m = T72[:1,3]
-    elif Re_D >= 4 and Re_D < 40:
-        C = T72[1:2,2]
-        m = T72[1:2,3]
-    elif Re_D >= 40 and Re_D < 4e+03:
-        C = T72[2:3,2]
-        m = T72[2:3,3]
-    elif Re_D >= 4e+03 and Re_D < 4e+04:
-        C = T72[3:4,2]
-        m = T72[3:4,3]
-    elif Re_D >= 4e+04 and Re_D < 4e+05:
-        C = T72[4:5,2]
-        m = T72[4:5,3]
-    Nu1 = C*(Re_D**m)*(Pr**(1/3))
-    h1 = (Nu1*k)/D
-    print("The first correlation is a match and h = " + str(h1[0]))
-
-if Re_D >= 1 and Re_D <= 10e+06 and Pr >= 0.7 and Pr <= 500:
-    if Re_D >= 1 and Re_D < 40:
-        C = T74[:1,2]
-        m = T74[:1,3]
-    elif Re_D >= 40 and Re_D < 10e+03:
-        C = T74[1:2,2]
-        m = T74[1:2,3]
-    elif Re_D >= 10e+03 and Re_D < 20e+05:
-        C = T74[2:3,2]
-        m = T74[2:3,3]
-    elif Re_D >= 20e+05 and Re_D < 10e+06:
-        C = T74[3:4,2]
-        m = T74[3:4,3]
-    if Pr <= 10:
-        n = 0.37
-    else:
-        n = 0.36
-    Pr_s = float(input(u"Please enter the value for Pr_s: "))
-    Nu2 = C*(Re_D**m)*(Pr**n)*(Pr/Pr_s)**(1/4)
-    h2 = (Nu2*k)/D
-    print("The second correlation is a match and h = " + str(h2[0]))
-
-if Re_D >= 0.2 and Pr >= 0.2:
-    Nu3 = 0.3+0.62*Re_D**(1/2)*Pr**(1/3)*((1+(0.4/Pr)**(2/3))**(1/4))*(1+(Re_D/282000)**(5/8))**(4/5)
-    h3 = (Nu3*k)/D
-    print("The third correlation is a match and h = " + str(h3))
-    
-
 #Determine appropriate correlation(s) from conditions
 
 #Correlation 7.52
+
+Re_D=(V*D)/nu
+print(Re_D)
+
 for i in range(len(T72)):
     if Re_D > T72[i,0] and Re_D < T72[i,1]:
         C = float(T72[i,2])
         m = float(T72[i,3])
-        Nu_d = C * Re_D**m * Pr**(1/3)
-        h = Nu_d*k/D
-        print("Correlation 7.52 fits and h = " + str(h) + "W/M^2*K")
-
-print (C,m)
+        Nu_D = C * Re_D**m * Pr**(1/3)
+        h1 = Nu_D*k/D
+        print("Correlation 7.52 fits and h = %9.5f " %h1 + " W/M^2*K")
+        
+print(C)
+print(m)
+print(Nu_D)
+print(h1)
 
 #Correlation 7.53
+
+Re_D=(V*D)/nu
+print(Re_D)
+
 for i in range(len(T74)):
     if Re_D > T74[i,0] and Re_D < T74[i,1]:
         C = float(T74[i,2])
@@ -105,14 +55,30 @@ for i in range(len(T74)):
             n = .37
         elif Pr < 10:
             n = .36
-        Nu_d = C * Re_D**m * Pr**n * (Pr/Pr_s)**(1/4)
-        h = Nu_d*k/D
-        print("Correlation 7.53 fits and h = " + str(h) + "W/M^2*K")
+        Nu_D = C * Re_D**m * Pr**n * (Pr/Pr_s)**(1/4)
+        h2 = Nu_D*k/D
+        print("Correlation 7.53 fits and h = %9.5f " %h2 + " W/M^2*K")
+        
+print(C)
+print(m)
+print(Nu_D)
+print(h2)
 
 #Correlation 7.54
 
-if Re_D >= .2 and Pr >= .2:
-    Nu_d = 0.3 + (0.62 * Re_D**(1/2) * Pr**(1/3) * (( 1 + (0.4 / Pr)**(2/3))**(1/4)) * (1 + (Re_D / 282000)**(5/8))**(4/5)
-    h = Nu_d*k/D
-    print("Correlation 7.54 fits and h = " + str(h) + "W/M^2*K")
+Pr=float(input("Enter the Prandtl number evaluated at Tf: "))
+nu=float(input("Enter the kinematic viscosity constant evaluated at Tf (m^2/s): "))
+k=float(input("Enter thermal conductivity evaluated at Tf (W/m*K): "))
 
+Re_D=(V*D)/nu
+print(Re_D)
+
+if Re_D >= .2 and Pr >= .2:
+    Nu_D = 0.3 + (0.62 * Re_D**(1/2) * Pr**(1/3)) * (( 1 + (0.4 / Pr)**(2/3))**(-1/4)) * (1 + (Re_D / 282000)**(5/8))**(4/5)
+    h3 = Nu_D*k/D
+    print("Correlation 7.54 fits and h = %9.5f " %h3 + " W/M^2*K")
+                  
+print(C)
+print(m)
+print(Nu_D)
+print(h3)
