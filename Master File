@@ -82,3 +82,25 @@ print(C)
 print(m)
 print(Nu_D)
 print(h3)
+
+
+#Here is what I've done so far to add classes
+
+class Correlation:
+    def __init__(self,name,geometry):
+        self.name = name
+        self.geometry = geometry
+        self.conditions = []
+        
+    def addConditions(self,condition):
+        self.conditions.append(condition)
+        
+
+c52 = Correlation('7.52','cylinder')
+c53 = Correlation('7.53','cylinder')
+c54 = Correlation('7.54','cylinder')
+
+c52.addConditions(T72)
+c53.addConditions(T74)
+
+print (c53.conditions[2,2])
