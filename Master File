@@ -1,6 +1,30 @@
 import numpy as np
 import sys
 
+'''
+# Using fsolve per Logan's instruction to solve for any undefined variable
+
+variables = ['Re_D', 'Pr', 'Pr_s', 'Nu_D', 'h', 'V', 'D', 'nu', 'k']
+
+unknown = input("Which variable are we solving for? (Re_D, Pr, Pr_s, Nu_D, h, V, D, nu, k): ")
+print(unknown)
+
+for i in range(len(variables)):
+    if variables[i] == unknown:
+        position = variables.index(variables[i])
+        print(position)
+
+print("All values must be entered in SI units.")
+
+for i in range(len(variables)):
+    if i == position:
+        variables[i] = True
+    else:
+        variables[i] = float(input("Please enter the value for " + variables[i]))
+
+print(variables[0:9])
+'''
+
 #Load arrays for Table 7.2, 7.4, and conditions
 
 T72=np.loadtxt("Table 7.2",delimiter=",")
