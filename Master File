@@ -73,7 +73,7 @@ k=float(input("Enter thermal conductivity evaluated at Tf (W/m*K): "))
 Re_D=(V*D)/nu
 print(Re_D)
 
-if Re_D >= .2 and Pr >= .2:
+if Re_D * Pr >= .2:
     Nu_D = 0.3 + (0.62 * Re_D**(1/2) * Pr**(1/3)) * (( 1 + (0.4 / Pr)**(2/3))**(-1/4)) * (1 + (Re_D / 282000)**(5/8))**(4/5)
     h3 = Nu_D*k/D
     print("Correlation 7.54 fits and h = %9.5f " %h3 + " W/M^2*K")
