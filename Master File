@@ -2,27 +2,29 @@ import numpy as np
 import sys
 
 '''
-# Using fsolve per Logan's instruction to solve for any undefined variable
+# Using fsolve per Logan's instruction
 
 variables = ['Re_D', 'Pr', 'Pr_s', 'Nu_D', 'h', 'V', 'D', 'nu', 'k']
+values = ['Re_D', 'Pr', 'Pr_s', 'Nu_D', 'h', 'V', 'D', 'nu', 'k']
 
 unknown = input("Which variable are we solving for? (Re_D, Pr, Pr_s, Nu_D, h, V, D, nu, k): ")
 print(unknown)
 
-for i in range(len(variables)):
-    if variables[i] == unknown:
-        position = variables.index(variables[i])
+for i in range(len(values)):
+    if values[i] == unknown:
+        position = values.index(values[i])
         print(position)
 
 print("All values must be entered in SI units.")
 
-for i in range(len(variables)):
+for i in range(len(values)):
     if i == position:
-        variables[i] = True
+        values[i] = True
     else:
-        variables[i] = float(input("Please enter the value for " + variables[i]))
+        values[i] = float(input("Please enter the value for " + values[i]))
 
 print(variables[0:9])
+print(values[0:9])
 '''
 
 #Load arrays for Table 7.2, 7.4, and conditions
