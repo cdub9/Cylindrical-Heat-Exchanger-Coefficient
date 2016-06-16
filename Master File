@@ -27,8 +27,8 @@ import scipy.optimize as opt
 
 #Load data from Tables 7.2 & 7.4 into arrays
 
-T72=np.loadtxt("Table 7.2.txt",delimiter=",")
-T74=np.loadtxt("Table 7.4.txt",delimiter=",")
+T72=np.loadtxt("Table 7.2",delimiter=",")
+T74=np.loadtxt("Table 7.4",delimiter=",")
 
 #Inputs from user
 correct=False
@@ -50,7 +50,6 @@ while not (correct):
 #Correlation 7.52
 
 Re_D=(V*D)/nu
-print(Re_D)
 
 for i in range(len(T72)):
     if Re_D > T72[i,0] and Re_D < T72[i,1]:
@@ -63,7 +62,6 @@ for i in range(len(T72)):
 #Correlation 7.53
 
 Re_D=(V*D)/nu
-print(Re_D)
 
 for i in range(len(T74)):
     if Re_D > T74[i,0] and Re_D < T74[i,1]:
@@ -74,15 +72,9 @@ for i in range(len(T74)):
             n = .37
         elif Pr >= 10:
             n = .36
-        print(n)
         Nu_D = C * Re_D**m * Pr**n * (Pr/Pr_s)**(1/4)
         h2 = Nu_D*k/D
         print("Correlation 7.53 fits and h = %9.5f " %h2 + " W/m^2*K")
-        
-print(C)
-print(m)
-print(Nu_D)
-print(h2)
 
 #Correlation 7.54
 
@@ -97,11 +89,6 @@ if Re_D * Pr >= .2:
     Nu_D = 0.3 + (0.62 * Re_D**(1/2) * Pr**(1/3)) * (( 1 + (0.4 / Pr)**(2/3))**(-1/4)) * (1 + (Re_D / 282000)**(5/8))**(4/5)
     h3 = Nu_D*k/D
     print("Correlation 7.54 fits and h = %9.5f " %h3 + " W/m^2*K")
-                  
-print(C)
-print(m)
-print(Nu_D)
-print(h3)
 
 #Part 2
 
@@ -143,8 +130,6 @@ if V == True or D == True or nu == True:
 else:
     Re_D = (V*D)/nu
 
-print(Re_D)
-print(Pr)
 
 guesses = np.zeros(len(values))
 print(guesses)
@@ -161,6 +146,10 @@ def f(guesses,values):
 
 ans = opt.fsolve(f,guesses,args=(values))
 print(ans)
+
+        
+
+
 
         
 
