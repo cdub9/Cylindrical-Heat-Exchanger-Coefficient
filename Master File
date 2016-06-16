@@ -1,19 +1,23 @@
 import numpy as np
 import sys
 
-'''
-# Using fsolve per Logan's instruction
+#Load data from Tables 7.2 & 7.4 into arrays
 
-variables = ['Re_D', 'Pr', 'Pr_s', 'Nu_D', 'h', 'V', 'D', 'nu', 'k']
-values = ['Re_D', 'Pr', 'Pr_s', 'Nu_D', 'h', 'V', 'D', 'nu', 'k']
+T72=np.loadtxt("Table 7.2.txt",delimiter=",")
+T74=np.loadtxt("Table 7.4.txt",delimiter=",")
 
-unknown = input("Which variable are we solving for? (Re_D, Pr, Pr_s, Nu_D, h, V, D, nu, k): ")
-print(unknown)
+# Trying to use fsolve per Logan's instruction
+
+variables = ['Pr_s', 'Nu_D', 'h', 'V', 'D', 'nu', 'k']
+values = ['Pr_s', 'Nu_D', 'h', 'V', 'D', 'nu', 'k']
+
+unknown = input("Which variable are we solving for? (Pr_s, Nu_D, h, V, D, nu, k): ")
+#print(unknown)
 
 for i in range(len(values)):
     if values[i] == unknown:
         position = values.index(values[i])
-        print(position)
+#        print(position)
 
 print("All values must be entered in SI units.")
 
@@ -21,16 +25,49 @@ for i in range(len(values)):
     if i == position:
         values[i] = True
     else:
-        values[i] = float(input("Please enter the value for " + values[i]))
+        values[i] = float(input("Please enter the value for " + values[i] + ": "))
 
-print(variables[0:9])
-print(values[0:9])
+Pr_s = values[0]
+Nu_D = values[1]
+h = values[2]
+V = values[3]
+D = values[4]
+nu = values[5]
+k = values[6]
+
+print(variables[0:7])
+print(values[0:7])
+#print(Pr_s)
+#print(Nu_D)
+#print(h)
+#print(V)
+#print(D)
+#print(nu)
+#print(k)
+
+# Get Re_D and Pr
+
+Pr = float(input("Please enter the Prandtl number (Pr): "))
+if V == True or D == True or nu == True:
+    Re_D = float(input("Please enter the Reynolds number (Re_D): "))
+else:
+    Re_D = (V*D)/nu
+
+print(Re_D)
+print(Pr)
+
+'''
+def f(variables,values):
+    if Re_D > T72[i,0] and Re_D < T72[i,1]:
+        C = float(T72[i,2])
+        m = float(T72[i,3])
+        Nu_D = C * Re_D**m * Pr**(1/3)
+        h1 = Nu_D*k/D
+        print("Correlation 7.52 fits and h = %9.5f " %h1 + " W/m^2*K")
+    else:
+        print("I think this is working...")
 '''
 
-#Load arrays for Table 7.2, 7.4, and conditions
-
-T72=np.loadtxt("Table 7.2",delimiter=",")
-T74=np.loadtxt("Table 7.4",delimiter=",")
 
 #Inputs from user
 correct=False
@@ -110,7 +147,7 @@ print(m)
 print(Nu_D)
 print(h3)
 
-
+'''
 #Here is what I've done so far to add classes
 
 class Correlation:
@@ -131,3 +168,4 @@ c52.addConditions(T72)
 c53.addConditions(T74)
 
 print (c53.conditions[2,2])
+'''
