@@ -1,6 +1,3 @@
---------------------------------------------------------------------------------
-Proposed program to submit:
-
 '''
 Final project by Insu Kim, Kyler Sant and Coleman Warren
 
@@ -16,8 +13,6 @@ feature working, but included the code in "Part 2" below.
 This was a difficult project and we had to spend a lot of time reading through a Mass and Heat Transfer book to understand the science
 behind the program, which is why the program didn't turn out to be as long as we anticipated. The program does what we initially set
 out to do, but with additional time we would have liked to complete the second feature and expand the program to be more dynamic.
-
-For your extra consideration, we used GitHub to collaborate on the project and share code with our teammates.
 '''
 
 import numpy as np
@@ -161,9 +156,6 @@ print(ans)
         
 
 --------------------------------------------------------------------------------
-
-
-
 import numpy as np
 import sys
 import scipy.optimize as opt
