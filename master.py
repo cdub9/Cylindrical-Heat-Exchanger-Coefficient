@@ -1,20 +1,8 @@
 '''
-Final project by Insu Kim, Kyler Sant and Coleman Warren
-
-Part 1 of our program takes inputs from the user, calculates the Reynolds number, uses the Reynolds and Prandtl numbers 
+This program takes inputs from the user, calculates the Reynolds number, uses the Reynolds and Prandtl numbers 
 to determine all possible correlations based on the conditions, and calculates h (the convection heat transfer coefficient) for every
 applicable cylindrical correlation.
-
-We finished part 1 before the due date, so we investigated ways to expand the program.
-The first idea was to add a class, but we determined after several hours that it wouldn't be very useful and worth our time in the long 
-run. The second idea was to add the ability to calculate other unspecified variables, rather than just "h". We weren't able to get this
-feature working, but included the code in "Part 2" below.
-
-This was a difficult project and we had to spend a lot of time reading through a Mass and Heat Transfer book to understand the science
-behind the program, which is why the program didn't turn out to be as long as we anticipated. The program does what we initially set
-out to do, but with additional time we would have liked to complete the second feature and expand the program to be more dynamic.
 '''
-
 import numpy as np
 import sys
 import scipy.optimize as opt
@@ -154,7 +142,7 @@ print(ans)
 
 
         
-
+'''
 --------------------------------------------------------------------------------
 import numpy as np
 import sys
@@ -234,7 +222,7 @@ ans = opt.fsolve(f,guesses,args=(values))
 print(ans)
 
         
-'''
+
 #Inputs from user
 correct=False
 while not (correct):
